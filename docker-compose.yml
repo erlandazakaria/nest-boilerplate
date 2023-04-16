@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  s-nest:
+    container_name: c-nest
+    build: 
+      context: . 
+    image: nest:1.0.0
+    restart: unless-stopped
+    networks:
+      n-nest: {}
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.r-nest.entrypoints=e-secure
+      - traefik.http.routers.r-nest.rule=Host(`*`)
+      - traefik.http.routers.r-nest.tls=true
+      - traefik.http.routers.r-nest.tls.certResolver=lets-encrypt
+
+networks:
+  n-nest:
+    external: true
+    name: n-nest
